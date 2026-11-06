@@ -1,18 +1,34 @@
-## Getting Started
+# Academia de Criaturas
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## ¿En qué consiste?
 
-## Folder Structure
+**Academia de Criaturas** es un videojuego de aventuras por consola desarrollado en Java e inspirado en Pokémon.
 
-The workspace contains two folders by default, where:
+El jugador comienza eligiendo una criatura inicial y se embarca en una aventura por la región de Valthera. Durante el recorrido podrá explorar diferentes lugares, encontrar nuevas criaturas, conseguir objetos y enfrentarse a distintos entrenadores.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+El objetivo principal es conseguir las dos medallas de gimnasio y derrotar a Damián, el rival del protagonista, en el combate final.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Características del juego
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+- Elección de una criatura inicial.
+- Exploración de bosques, ruinas y cuevas.
+- Posibilidad de encontrar nuevas criaturas y añadirlas al equipo.
+- Combates contra líderes de gimnasio y otros rivales.
+- Diferentes tipos de criaturas y ataques.
+- Sistema de niveles y experiencia.
+- Tienda, monedas y caramelos para mejorar las criaturas.
+- Inventario y Centro Pokémon para recuperar la vida.
 
-## Dependency Management
+## Cómo jugar
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+El juego funciona mediante un menú de opciones en la consola. El jugador tendrá que introducir números o respuestas para tomar decisiones y avanzar en la historia.
+
+Para ejecutar el juego, hay que abrir el proyecto en un entorno compatible con Java y ejecutar la clase `Juego`.
+
+## Tecnologías utilizadas
+
+- Java
+- Visual Studio Code
+- Git y GitHub
+
+**El texto del readme me ha ayudado la inteligencia artficial**

@@ -4,9 +4,13 @@ public class Juego {
 
     public static void main(String[] args) {
 
+        // Scanner: sirve para leer por teclado lo que escribe el jugador.
         Scanner teclado = new Scanner(System.in);
 
         // Datos de los Pokemon
+        // Lista de criaturas disponibles en el juego.
+        // ARRAYS PARALELOS: nombres[i], tipos[i] y estadisticas[i] pertenecen al mismo Pokemon.
+        // Asi, con un unico indice se consiguen todos sus datos.
         String[] nombres = {
             "Charmander", "Bulbasaur", "Squirtle", "Ninetales",
             "Tangela", "Vaporeon", "Reshiram", "Shaymin", "Kyogre",
@@ -14,6 +18,7 @@ public class Juego {
             "Gyarados", "Sceptile"
         };
 
+        // Cada criatura tiene un tipo asociado a su posicion.
         String[] tipos = {
             "Fuego", "Planta", "Agua", "Fuego",
             "Planta", "Agua", "Fuego", "Planta", "Agua",
@@ -21,6 +26,7 @@ public class Juego {
             "Agua", "Planta"
         };
 
+        // Ataques que pueden utilizar las criaturas.
         String[] nombresAtaques = {
             "Ascuas", "Rueda Fuego", "Lanzallamas",
             "Pistola Agua", "Burbuja", "Hidrobomba",
@@ -35,6 +41,7 @@ public class Juego {
             15, 25, 40
         };
 
+        // Matriz: cada fila es un Pokemon y sus 3 numeros son posiciones de los arrays de ataques.
         int[][] ataquesPokemon = {
             {0, 1, 9},
             {6, 7, 9},
@@ -54,6 +61,8 @@ public class Juego {
         };
 
         // Estadisticas base: vida, ataque y defensa
+        // Guarda la vida, el ataque y la defensa de cada criatura.
+        // Matriz: cada fila es {vida, ataque, defensa} del Pokemon con ese mismo indice.
         int[][] estadisticas = {
             {39, 52, 43},
             {45, 49, 49},
@@ -72,9 +81,12 @@ public class Juego {
             {70, 110, 75}
         };
 
+        // final = constante: su valor no se puede modificar durante el programa.
         final int PRECIO_CARAMELO = 10;
 
         // Equipo del jugador
+        // Arrays con los datos de las criaturas que consigue el jugador.
+        // Array con hueco para 30 Pokemon; 'equipo' guarda el indice de cada uno (posicion en 'nombres').
         int[] equipo = new int[30];
         int[] nivel = new int[30];
         int[] experiencia = new int[30];
@@ -82,9 +94,11 @@ public class Juego {
         int[] vidaMaxima = new int[30];
         int[] bonusAtaque = new int[30];
         int[] bonusDefensa = new int[30];
+        // Cuantos Pokemon tiene realmente el jugador (solo se usan las primeras 'cantidad' posiciones).
         int cantidad = 0;
 
         // Equipo de combate
+        // Aqui se guardan las criaturas elegidas para los combates.
         int[] equipoCombate = new int[3];
         int cantidadCombate = 0;
 
@@ -95,6 +109,7 @@ public class Juego {
         int cantidadRival = 0;
 
         // Inventario
+        // Objetos y dinero que puede utilizar el jugador.
         int caramelos = 0;
         int monedas = 0;
 
@@ -115,6 +130,7 @@ public class Juego {
         boolean combateActivo = true;
 
         // Menu principal
+        // BUCLE WHILE del menu principal: se repite mientras juegoActivo sea true.
         while (juegoActivo) {
 
             System.out.println();
@@ -127,6 +143,7 @@ public class Juego {
 
             opcionPrincipal = teclado.nextInt();
 
+            // SWITCH: ejecuta el 'case' que coincide con la opcion elegida (1 = empezar, 2 = salir).
             switch (opcionPrincipal) {
 
                 case 1:
@@ -140,12 +157,14 @@ public class Juego {
 
                     opcionInicial = teclado.nextInt();
 
+                    // Validacion: si la opcion no es 1, 2 o 3 vuelve a preguntar hasta que sea correcta.
                     while (opcionInicial < 1 || opcionInicial > 3) {
                         System.out.println("Opcion no valida.");
                         System.out.print("Elige 1, 2 o 3: ");
                         opcionInicial = teclado.nextInt();
                     }
 
+                    // IF / ELSE IF / ELSE: traduce la opcion del menu al indice del Pokemon (0 = Charmander, 2 = Squirtle, 1 = Bulbasaur).
                     if (opcionInicial == 1) {
                         equipo[cantidad] = 0;
                     } else if (opcionInicial == 2) {
@@ -164,6 +183,7 @@ public class Juego {
                     System.out.println("Tu primer Pokemon es " + nombres[equipo[0]] + ".");
 
                     // Menu de la aventura
+                    // BUCLE WHILE del menu de aventura: se repite hasta que el jugador salga o termine el juego.
                     while (juegoActivo) {
 
                         System.out.println();
@@ -175,7 +195,8 @@ public class Juego {
                         System.out.println("3. Ir a la tienda");
                         System.out.println("4. Ver inventario");
                         System.out.println("5. Preparar el equipo del combate");
-                        System.out.println("6. Salir del juego");
+                        System.out.println("6. Usar caramelo");
+                        System.out.println("7. Salir del juego");
                         System.out.print("Elige una opcion: ");
 
                         opcion = teclado.nextInt();
@@ -193,6 +214,7 @@ public class Juego {
                                 // PRIMERA PARTE: BOSQUE Y RUINAS
                                 // =====================================
 
+                                // La primera parte (bosque y ruinas) solo se juega una vez: despues puebloAlcanzado pasa a true.
                                 if (!puebloAlcanzado) {
 
                                     System.out.println();
@@ -202,6 +224,7 @@ public class Juego {
 
                                     char respuesta;
 
+                                    // DO-WHILE: se ejecuta al menos una vez y se repite mientras la respuesta no sea S ni N (validacion de entrada).
                                     do {
                                         System.out.println();
                                         System.out.println("¿Quieres mirar en el arbusto?");
@@ -211,64 +234,66 @@ public class Juego {
 
                                         respuesta = teclado.next().charAt(0);
 
-                                        if (respuesta != 'S' && respuesta != 's'
-                                                && respuesta != 'N' && respuesta != 'n') {
+                                        if (respuesta != 'S' && respuesta != 's' && respuesta != 'N' && respuesta != 'n') {
                                             System.out.println("Respuesta no valida. Escribe S o N.");
                                         }
 
-                                    } while (respuesta != 'S' && respuesta != 's'
-                                            && respuesta != 'N' && respuesta != 'n');
+                                    } while (respuesta != 'S' && respuesta != 's' && respuesta != 'N' && respuesta != 'n');
 
+                                       // El resultado de explorar se decide al azar.
                                     if (respuesta == 'S' || respuesta == 's') {
 
-                                        int evento = (int) (Math.random() * 14) + 1;
+                                        // Math.random() da un decimal entre 0 y 1; al multiplicarlo por 12 y sumar 1 sale un numero entero del 1 al 12.
+                                        int evento = (int) (Math.random() * 12) + 1;
 
+                                        // SWITCH: cada case es un resultado posible del azar (monedas, caramelos, ladron o Pokemon nuevo).
                                         switch (evento) {
 
                                             case 1:
-                                                monedas += 10;
+                                                monedas = monedas + 10;
                                                 System.out.println("Has encontrado 10 monedas.");
                                                 break;
 
                                             case 2:
-                                                monedas += 50;
+                                                monedas = monedas + 50;
                                                 System.out.println("Has encontrado 50 monedas.");
                                                 break;
 
                                             case 3:
-                                                monedas += 100;
+                                                monedas = monedas + 100;
                                                 System.out.println("Has encontrado 100 monedas.");
                                                 break;
 
                                             case 4:
-                                                monedas += 500;
+                                                monedas = monedas + 500;
                                                 System.out.println("¡GUAU! Has encontrado 500 monedas.");
                                                 break;
 
                                             case 5:
-                                                caramelos++;
+                                                caramelos = caramelos + 1;
                                                 System.out.println("Has encontrado un caramelo.");
                                                 break;
 
                                             case 6:
-                                                caramelos += 3;
+                                                caramelos = caramelos + 3;
                                                 System.out.println("Has encontrado 3 caramelos.");
                                                 break;
 
                                             case 7:
-                                                caramelos += 5;
+                                                caramelos = caramelos + 5;
                                                 System.out.println("Has encontrado 5 caramelos.");
                                                 break;
 
                                             case 8:
-                                                caramelos += 12;
+                                                caramelos = caramelos + 12;
                                                 System.out.println("¡Has encontrado 12 caramelos!");
                                                 break;
 
                                             case 9:
                                                 System.out.println("Ladron: ¡Dame 50 monedas!");
+                                                // IF: el ladron solo te quita las monedas si tienes suficientes.
                                                 if (monedas >= 50) {
-                                                    monedas -= 50;
+                                                    monedas = monedas - 50;
                                                     System.out.println("Te he quitado 50 monedas JAJAJA.");
                                                 } else {
                                                     System.out.println("No tienes tantas monedas. Esta vez te has salvado.");
@@ -276,15 +301,11 @@ public class Juego {
                                                 break;
 
                                             case 10:
-                                            case 11:
-                                            case 12:
-                                            case 13:
-                                            case 14:
-
                                                 int pokemonEncontrado = (int) (Math.random() * nombres.length);
 
                                                 System.out.println("¡Has encontrado a " + nombres[pokemonEncontrado] + "!");
 
+                                                // IF: comprueba que queda hueco en el equipo; si no, el Pokemon encontrado no se puede guardar.
                                                 if (cantidad < equipo.length) {
                                                     equipo[cantidad] = pokemonEncontrado;
                                                     nivel[cantidad] = 1;
@@ -293,6 +314,43 @@ public class Juego {
                                                     vidaMaxima[cantidad] = estadisticas[pokemonEncontrado][0];
                                                     cantidad++;
                                                     System.out.println(nombres[pokemonEncontrado] + " se ha unido a tu equipo.");
+                                                } else {
+                                                    System.out.println("Tu equipo esta lleno.");
+                                                }
+                                                break;
+
+
+                                            case 11:
+                                                int pokemonEncontrado2 = (int) (Math.random() * nombres.length);
+
+                                                System.out.println("¡Has encontrado a " + nombres[pokemonEncontrado2] + "!");
+
+                                                if (cantidad < equipo.length) {
+                                                    equipo[cantidad] = pokemonEncontrado2;
+                                                    nivel[cantidad] = 1;
+                                                    experiencia[cantidad] = 0;
+                                                    vidaActual[cantidad] = estadisticas[pokemonEncontrado2][0];
+                                                    vidaMaxima[cantidad] = estadisticas[pokemonEncontrado2][0];
+                                                    cantidad++;
+                                                    System.out.println(nombres[pokemonEncontrado2] + " se ha unido a tu equipo.");
+                                                } else {
+                                                    System.out.println("Tu equipo esta lleno.");
+                                                }
+                                                break;
+
+                                            case 12:
+                                                int pokemonEncontrado3 = (int) (Math.random() * nombres.length);
+
+                                                System.out.println("¡Has encontrado a " + nombres[pokemonEncontrado3] + "!");
+
+                                                if (cantidad < equipo.length) {
+                                                    equipo[cantidad] = pokemonEncontrado3;
+                                                    nivel[cantidad] = 1;
+                                                    experiencia[cantidad] = 0;
+                                                    vidaActual[cantidad] = estadisticas[pokemonEncontrado3][0];
+                                                    vidaMaxima[cantidad] = estadisticas[pokemonEncontrado3][0];
+                                                    cantidad++;
+                                                    System.out.println(nombres[pokemonEncontrado3] + " se ha unido a tu equipo.");
                                                 } else {
                                                     System.out.println("Tu equipo esta lleno.");
                                                 }
@@ -320,14 +378,13 @@ public class Juego {
 
                                         respuesta2 = teclado.next().charAt(0);
 
-                                        if (respuesta2 != 'S' && respuesta2 != 's'
-                                                && respuesta2 != 'N' && respuesta2 != 'n') {
+                                        if (respuesta2 != 'S' && respuesta2 != 's' && respuesta2 != 'N' && respuesta2 != 'n') {
                                             System.out.println("Respuesta no valida. Escribe S o N.");
                                         }
 
-                                    } while (respuesta2 != 'S' && respuesta2 != 's'
-                                            && respuesta2 != 'N' && respuesta2 != 'n');
+                                    } while (respuesta2 != 'S' && respuesta2 != 's' && respuesta2 != 'N' && respuesta2 != 'n');
 
+                                    // El cofre puede contener premios o algun inconveniente.
                                     if (respuesta2 == 'S' || respuesta2 == 's') {
 
                                         int eventoRuinas = (int) (Math.random() * 12) + 1;
@@ -335,39 +392,39 @@ public class Juego {
                                         switch (eventoRuinas) {
 
                                             case 1:
-                                                monedas += 50;
+                                                monedas = monedas + 50;
                                                 System.out.println("Has encontrado 50 monedas.");
                                                 break;
 
                                             case 2:
-                                                monedas += 100;
+                                                monedas = monedas + 100;
                                                 System.out.println("Has encontrado 100 monedas.");
                                                 break;
 
                                             case 3:
-                                                monedas += 500;
+                                                monedas = monedas + 500;
                                                 System.out.println("¡Has encontrado 500 monedas!");
                                                 break;
 
                                             case 4:
-                                                caramelos += 3;
+                                                caramelos = caramelos + 3;
                                                 System.out.println("Has encontrado 3 caramelos.");
                                                 break;
 
                                             case 5:
-                                                caramelos += 5;
+                                                caramelos = caramelos + 5;
                                                 System.out.println("Has encontrado 5 caramelos.");
                                                 break;
 
                                             case 6:
-                                                caramelos += 12;
+                                                caramelos = caramelos + 12;
                                                 System.out.println("Has encontrado 12 caramelos.");
                                                 break;
 
                                             case 7:
                                                 System.out.println("Ladron: ¡Dame 50 monedas!");
                                                 if (monedas >= 50) {
-                                                    monedas -= 50;
+                                                    monedas = monedas - 50;
                                                     System.out.println("Te he quitado 50 monedas.");
                                                 } else {
                                                     System.out.println("No tienes suficientes monedas.");
@@ -377,18 +434,15 @@ public class Juego {
                                             case 8:
                                                 System.out.println("Ladron: ¡Dame 80 monedas!");
                                                 if (monedas >= 80) {
-                                                    monedas -= 80;
+                                                    monedas = monedas - 80;
                                                     System.out.println("Te he quitado 80 monedas.");
                                                 } else {
                                                     System.out.println("No tienes suficientes monedas.");
                                                 }
                                                 break;
 
-                                            case 9:
+                                            // OJO: en este switch no existe 'case 9', asi que 1 de cada 12 veces no pasa nada.
                                             case 10:
-                                            case 11:
-                                            case 12:
-
                                                 int pokemonRuinas = (int) (Math.random() * nombres.length);
 
                                                 System.out.println("¡Has encontrado a " + nombres[pokemonRuinas] + "!");
@@ -401,6 +455,43 @@ public class Juego {
                                                     vidaMaxima[cantidad] = estadisticas[pokemonRuinas][0];
                                                     cantidad++;
                                                     System.out.println(nombres[pokemonRuinas] + " se ha unido a tu equipo.");
+                                                } else {
+                                                    System.out.println("Tu equipo esta lleno.");
+                                                }
+                                                break;
+
+                                            case 11:
+                                                int pokemonRuinas2 = (int) (Math.random() * nombres.length);
+
+                                                System.out.println("¡Has encontrado a " + nombres[pokemonRuinas2] + "!");
+
+                                                if (cantidad < equipo.length) {
+                                                    equipo[cantidad] = pokemonRuinas2;
+                                                    nivel[cantidad] = 1;
+                                                    experiencia[cantidad] = 0;
+                                                    vidaActual[cantidad] = estadisticas[pokemonRuinas2][0];
+                                                    vidaMaxima[cantidad] = estadisticas[pokemonRuinas2][0];
+                                                    cantidad++;
+                                                    System.out.println(nombres[pokemonRuinas2] + " se ha unido a tu equipo.");
+                                                } else {
+                                                    System.out.println("Tu equipo esta lleno.");
+                                                }
+                                                break;
+
+                                            case 12:
+
+                                                int pokemonRuinas3 = (int) (Math.random() * nombres.length);
+
+                                                System.out.println("¡Has encontrado a " + nombres[pokemonRuinas3] + "!");
+
+                                                if (cantidad < equipo.length) {
+                                                    equipo[cantidad] = pokemonRuinas3;
+                                                    nivel[cantidad] = 1;
+                                                    experiencia[cantidad] = 0;
+                                                    vidaActual[cantidad] = estadisticas[pokemonRuinas3][0];
+                                                    vidaMaxima[cantidad] = estadisticas[pokemonRuinas3][0];
+                                                    cantidad++;
+                                                    System.out.println(nombres[pokemonRuinas3] + " se ha unido a tu equipo.");
                                                 } else {
                                                     System.out.println("Tu equipo esta lleno.");
                                                 }
@@ -423,10 +514,12 @@ public class Juego {
                                 // PUEBLO DE ROCA: SERVICIOS
                                 // =====================================
 
+                                // Solo se entra al pueblo y al primer gimnasio (Nereo) mientras la historia esta en la etapa 0.
                                 if (etapaHistoria == 0) {
 
                                     boolean enPueblo = true;
 
+                                    // BUCLE WHILE: mantiene el menu del pueblo hasta que el jugador elige continuar (enPueblo = false).
                                     while (enPueblo) {
 
                                         System.out.println();
@@ -446,6 +539,7 @@ public class Juego {
                                             case 1:
                                                 System.out.println();
                                                 System.out.println("=== CENTRO POKEMON ===");
+                                                // FOR: recorre todos los Pokemon del jugador y les pone la vida al maximo (Centro Pokemon).
                                                 for (int i = 0; i < cantidad; i++) {
                                                     vidaActual[i] = vidaMaxima[i];
                                                 }
@@ -453,9 +547,45 @@ public class Juego {
                                                 break;
 
                                             case 2:
-                                                System.out.println();
-                                                System.out.println("La tienda estara disponible proximamente.");
+                                                 System.out.println();
+                                                System.out.println("======= BIENVENIDO A LA TIENDA ========");
                                                 System.out.println("Tienes " + monedas + " monedas.");
+                                                System.out.println();
+                                                System.out.println("1. Un caramelo (" + PRECIO_CARAMELO + " monedas)");
+                                                System.out.println("2. Pack de 10 caramelos (80 monedas)");
+                                                System.out.println("3. Salir de la tienda");
+                                                System.out.print("¿Que quieres comprar?: ");
+
+                                                int opcionTienda = teclado.nextInt();
+
+                                                if (opcionTienda == 1) {
+
+                                                    // IF: solo deja comprar si hay monedas suficientes; si no, avisa.
+                                                    if (monedas >= PRECIO_CARAMELO) {
+                                                        caramelos = caramelos + 1;
+                                                        monedas = monedas - PRECIO_CARAMELO;
+                                                        System.out.println("Has comprado 1 caramelo.");
+                                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes monedas suficientes.");
+                                                    }
+
+                                                } else if (opcionTienda == 2) {
+
+                                                    if (monedas >= 80) {
+                                                        caramelos = caramelos + 10;
+                                                        monedas = monedas - 80;
+                                                        System.out.println("Has comprado 10 caramelos.");
+                                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes monedas suficientes.");
+                                                    }
+
+                                                } else if (opcionTienda == 3) {
+                                                    System.out.println("Sales de la tienda.");
+                                                } else {
+                                                    System.out.println("Opcion no valida.");
+                                                }
                                                 break;
 
                                             case 3:
@@ -495,10 +625,12 @@ public class Juego {
 
                                     cantidadRival = 2;
 
+                                    // FOR: recorre el equipo del rival y le asigna a cada Pokemon su vida inicial.
                                     for (int i = 0; i < cantidadRival; i++) {
                                         vidaActualRival[i] = estadisticas[equipoRival[i]][0];
                                     }
 
+                                    // IF: si el jugador no ha elegido equipo de combate, no se puede luchar.
                                     if (cantidadCombate == 0) {
                                         System.out.println();
                                         System.out.println("No tienes ningun Pokemon preparado para combatir.");
@@ -508,6 +640,9 @@ public class Juego {
                                         pokemonRivalActual = 0;
                                         combateActivo = true;
 
+                                        // Multiplicadores segun el tipo del ataque y del rival.
+                                        // Tabla de efectividad: filas = tipo del ataque, columnas = tipo del defensor (0 Fuego, 1 Agua, 2 Planta).
+                                        // 1.5 = muy eficaz, 0.5 = poco eficaz, 1.0 = normal.
                                         double[][] efectividad = {
                                             {1.0, 0.5, 1.5},
                                             {1.5, 1.0, 0.5},
@@ -526,10 +661,814 @@ public class Juego {
                                         System.out.println();
                                         System.out.println("¡COMIENZA EL COMBATE!");
 
+                                        // BUCLE DEL COMBATE: cada vuelta es un turno (ataca el jugador y despues el rival) hasta que a uno se le acaben los Pokemon.
                                         while (combateActivo) {
 
-                                            if (pokemonJugadorActual >= cantidadCombate
-                                                    || pokemonRivalActual >= cantidadRival) {
+                                            if (pokemonJugadorActual >= cantidadCombate || pokemonRivalActual >= cantidadRival) {
+                                                combateActivo = false;
+                                                break;
+                                            }
+
+                                            // Cadena de indices: posicion en el equipo de combate -> posicion en 'equipo' -> indice del Pokemon en 'nombres'.
+                                            int posicionJugador = equipoCombate[pokemonJugadorActual];
+                                            int indicePokemonJugador = equipo[posicionJugador];
+                                            int indicePokemonRival = equipoRival[pokemonRivalActual];
+
+                                            System.out.println();
+                                            System.out.println("--------------------------------");
+                                            System.out.println("TU TURNO");
+                                            System.out.println(nombres[indicePokemonJugador] + " - Vida: " + vidaActual[posicionJugador]);
+                                            System.out.println(nombres[indicePokemonRival] + " - Vida: " + vidaActualRival[pokemonRivalActual]);
+
+                                            System.out.println();
+                                            System.out.println("Elige un ataque:");
+
+                                            // FOR: muestra los 3 ataques del Pokemon que esta luchando, con su nombre y potencia.
+                                            for (int i = 0; i < 3; i++) {
+                                                int indiceAtaque = ataquesPokemon[indicePokemonJugador][i];
+                                                System.out.println((i + 1) + ". " + nombresAtaques[indiceAtaque] + " - Potencia: " + potenciaAtaques[indiceAtaque]);
+                                            }
+
+                                            int opcionAtaque;
+
+                                            do {
+                                                // Dentro del do-while: se repite hasta que el jugador elija 1, 2 o 3.
+                                                System.out.print("Introduce el numero del ataque: ");
+                                                opcionAtaque = teclado.nextInt();
+
+                                                if (opcionAtaque < 1 || opcionAtaque > 3) {
+                                                    System.out.println("Ataque no valido.");
+                                                }
+                                            } while (opcionAtaque < 1 || opcionAtaque > 3);
+
+                                            int indiceAtaqueJugador = ataquesPokemon[indicePokemonJugador][opcionAtaque - 1];
+
+                                            // Segun el indice del ataque se decide su tipo: 0-2 Fuego, 3-5 Agua, 6-8 Planta, 9-11 Normal (-1, sin ventajas).
+                                            int tipoAtaqueJugador = -1;
+
+                                            if (indiceAtaqueJugador <= 2) {
+                                                tipoAtaqueJugador = 0;
+                                            } else if (indiceAtaqueJugador <= 5) {
+                                                tipoAtaqueJugador = 1;
+                                            } else if (indiceAtaqueJugador <= 8) {
+                                                tipoAtaqueJugador = 2;
+                                            }
+
+                                            int tipoDefensorRival = 0;
+
+                                            // SWITCH sobre texto: convierte el tipo del rival ("Fuego", "Agua", "Planta") en un numero para usar la tabla.
+                                            switch (tipos[indicePokemonRival]) {
+                                                case "Fuego":
+                                                    tipoDefensorRival = 0;
+                                                    break;
+                                                case "Agua":
+                                                    tipoDefensorRival = 1;
+                                                    break;
+                                                case "Planta":
+                                                    tipoDefensorRival = 2;
+                                                    break;
+                                            }
+
+                                            double multiplicadorJugador = 1.0;
+
+                                            if (tipoAtaqueJugador != -1) {
+                                                multiplicadorJugador = efectividad[tipoAtaqueJugador][tipoDefensorRival];
+                                            }
+
+                                            // Calcula el daño teniendo en cuenta ataque, defensa y tipo.
+                                            // FORMULA DE DANO: (potencia + ataque + bonus - defensa del rival / 2) x multiplicador de tipo.
+                                            int danoJugador = (int) (
+                                                    (potenciaAtaques[indiceAtaqueJugador]
+                                                    + estadisticas[indicePokemonJugador][1]
+                                                    + bonusAtaque[posicionJugador]
+                                                    - estadisticas[indicePokemonRival][2] / 2.0)
+                                                    * multiplicadorJugador
+                                            );
+
+                                            // IF: un ataque siempre hace como minimo 1 de dano.
+                                            if (danoJugador < 1) {
+                                                danoJugador = 1;
+                                            }
+
+                                            System.out.println();
+                                            System.out.println(nombres[indicePokemonJugador] + " utiliza " + nombresAtaques[indiceAtaqueJugador] + "!");
+
+                                            // IF / ELSE IF: muestra el mensaje segun la ventaja o desventaja de tipo.
+                                            if (multiplicadorJugador > 1.0) {
+                                                System.out.println("¡Es muy eficaz!");
+                                            } else if (multiplicadorJugador < 1.0) {
+                                                System.out.println("No es muy eficaz...");
+                                            }
+
+                                            System.out.println("Ha causado " + danoJugador + " puntos de daño.");
+
+                                            vidaActualRival[pokemonRivalActual] -= danoJugador;
+
+                                            if (vidaActualRival[pokemonRivalActual] < 0) {
+                                                vidaActualRival[pokemonRivalActual] = 0;
+                                            }
+
+                                            // IF: si el rival se queda sin vida, pasa a su siguiente Pokemon y el turno del rival se salta (continue).
+                                            if (vidaActualRival[pokemonRivalActual] == 0) {
+                                                System.out.println(nombres[indicePokemonRival] + " ha sido debilitado.");
+                                                pokemonRivalActual++;
+
+                                                if (pokemonRivalActual >= cantidadRival) {
+                                                    break;
+                                                }
+
+                                                System.out.println("Nereo: ¡Adelante, " + nombres[equipoRival[pokemonRivalActual]] + "!");
+                                                // continue: vuelve al inicio del while sin ejecutar el resto del turno.
+                                                continue;
+                                            }
+
+                                            // El rival elige uno de sus ataques de forma aleatoria.
+                                            // TURNO DE NEREO
+                                            System.out.println();
+                                            System.out.println("TURNO DE NEREO");
+
+                                            // El rival elige al azar uno de sus 3 ataques (posicion 0, 1 o 2).
+                                            int posicionAtaqueRival = (int) (Math.random() * 3);
+                                            int indiceAtaqueRival = ataquesPokemon[indicePokemonRival][posicionAtaqueRival];
+
+                                            int tipoAtaqueRival = -1;
+
+                                            if (indiceAtaqueRival <= 2) {
+                                                tipoAtaqueRival = 0;
+                                            } else if (indiceAtaqueRival <= 5) {
+                                                tipoAtaqueRival = 1;
+                                            } else if (indiceAtaqueRival <= 8) {
+                                                tipoAtaqueRival = 2;
+                                            }
+
+                                            int tipoDefensorJugador = 0;
+
+                                            switch (tipos[indicePokemonJugador]) {
+                                                case "Fuego":
+                                                    tipoDefensorJugador = 0;
+                                                    break;
+                                                case "Agua":
+                                                    tipoDefensorJugador = 1;
+                                                    break;
+                                                case "Planta":
+                                                    tipoDefensorJugador = 2;
+                                                    break;
+                                            }
+
+                                            double multiplicadorRival = 1.0;
+
+                                            if (tipoAtaqueRival != -1) {
+                                                multiplicadorRival = efectividad[tipoAtaqueRival][tipoDefensorJugador];
+                                            }
+
+                                            int danoRival = (int) (
+                                                    (potenciaAtaques[indiceAtaqueRival]
+                                                    + estadisticas[indicePokemonRival][1]
+                                                    - (estadisticas[indicePokemonJugador][2]
+                                                    + bonusDefensa[posicionJugador]) / 2.0)
+                                                    * multiplicadorRival
+                                            );
+
+                                            if (danoRival < 1) {
+                                                danoRival = 1;
+                                            }
+
+                                            System.out.println(nombres[indicePokemonRival] + " utiliza " + nombresAtaques[indiceAtaqueRival] + "!");
+
+                                            if (multiplicadorRival > 1.0) {
+                                                System.out.println("¡Es muy eficaz!");
+                                            } else if (multiplicadorRival < 1.0) {
+                                                System.out.println("No es muy eficaz...");
+                                            }
+
+                                            System.out.println("Ha causado " + danoRival + " puntos de daño.");
+
+                                            vidaActual[posicionJugador] -= danoRival;
+
+                                            if (vidaActual[posicionJugador] < 0) {
+                                                vidaActual[posicionJugador] = 0;
+                                            }
+
+                                            // IF: si tu Pokemon se debilita, entra el siguiente; si no quedan, el combate termina.
+                                            if (vidaActual[posicionJugador] == 0) {
+                                                System.out.println(nombres[indicePokemonJugador] + " ha sido debilitado.");
+                                                pokemonJugadorActual++;
+
+                                                if (pokemonJugadorActual >= cantidadCombate) {
+                                                    System.out.println("¡Te has quedado sin Pokemon!");
+                                                    break;
+                                                }
+
+                                                int siguientePokemon = equipo[equipoCombate[pokemonJugadorActual]];
+
+                                                System.out.println("¡Adelante, " + nombres[siguientePokemon] + "!");
+                                            }
+                                        }
+
+                                        System.out.println();
+                                        System.out.println("========== FIN DEL COMBATE ==========");
+
+                                        // IF / ELSE tras el combate: si has derrotado a todos los Pokemon rivales ganas y avanzas la historia; si no, has perdido.
+                                        if (pokemonRivalActual >= cantidadRival) {
+
+                                            System.out.println("¡HAS GANADO EL COMBATE!");
+                                            System.out.println("Nereo: No puede ser... Has ganado.");
+                                            System.out.println("Nereo: Has conseguido la primera medalla. Sigue hacia Ciudad Brasal.");
+
+                                            // Avanza la historia: ahora se desbloquea el camino a Ciudad Brasal.
+                                            etapaHistoria = 1;
+
+                                            System.out.println();
+                                            System.out.println("Tus Pokemon reciben 100 puntos de experiencia.");
+
+                                            // Los Pokemon que han participado reciben experiencia.
+                                            // FOR: recorre solo los Pokemon que han combatido para darles experiencia.
+                                            for (int i = 0; i < cantidadCombate; i++) {
+                                                int posicionEquipo = equipoCombate[i];
+
+                                                // IF: solo ganan experiencia si no han llegado al nivel maximo (50).
+                                                if (nivel[posicionEquipo] < 50) {
+                                                    experiencia[posicionEquipo] += 100;
+
+                                                    if (experiencia[posicionEquipo] >= 100) {
+                                                        experiencia[posicionEquipo] -= 100;
+                                                        nivel[posicionEquipo]++;
+
+                                                        System.out.println(nombres[equipo[posicionEquipo]] + " ha subido al nivel " + nivel[posicionEquipo] + "!");
+
+                                                      
+                                                            vidaMaxima[posicionEquipo] += 3;
+                                                            vidaActual[posicionEquipo] += 3;
+                                                            bonusAtaque[posicionEquipo] += 3;
+                                                            bonusDefensa[posicionEquipo] += 3;
+
+                                                            System.out.println("¡Sus estadisticas han aumentado en 3 puntos!");
+                                        
+                                                    }
+                                                } else {
+                                                    System.out.println(nombres[equipo[posicionEquipo]] + " ya ha alcanzado el nivel maximo.");
+                                                }
+
+                                                System.out.println("Experiencia: " + experiencia[posicionEquipo] + "/100");
+                                            }
+
+                                        } else {
+                                            System.out.println("HAS PERDIDO EL COMBATE...");
+                                            System.out.println("Nereo: ¡Te falta mucho entrenamiento!");
+                                            System.out.println("Puedes curarte y volver a intentarlo.");
+                                        }
+                                    }
+                                }
+                                // =====================================
+                                // SEGUNDA PARTE: CAMINO A CIUDAD BRASAL
+                                // =====================================
+
+                                // Segunda parte (Ciudad Brasal y Volkar): solo si la historia empezo en la etapa 1 y sigue en ella.
+                                if (etapaInicio == 1 && etapaHistoria == 1) {
+
+                                    if (!rutaSegundoGimnasioExplorada) {
+
+                                        System.out.println();
+                                        System.out.println("================================================");
+                                        System.out.println("          EL CAMINO A CIUDAD BRASAL");
+                                        System.out.println("================================================");
+                                        System.out.println("Tras conseguir la primera medalla, abandonas Pueblo de Roca.");
+                                        System.out.println("Tu siguiente destino es Ciudad Brasal, donde se encuentra");
+                                        System.out.println("el segundo gimnasio de la region de Valthera.");
+                                        System.out.println();
+                                        System.out.println("Hannibal: Nereo era fuerte, pero no pienso detenerme aqui.");
+                                        System.out.println("Mientras avanzas, el camino se estrecha entre las montañas.");
+                                        System.out.println("Una cueva oscura aparece junto al sendero.");
+                                        System.out.println("En la entrada hay unas cajas abandonadas y varias huellas.");
+
+                                        // La cueva ofrece diferentes recompensas aleatorias.
+                                        // EVENTO 1: CUEVA DEL ECO
+                                        System.out.println();
+                                        System.out.println("================================================");
+                                        System.out.println("                CUEVA DEL ECO");
+                                        System.out.println("================================================");
+                                        System.out.println("¿Quieres explorar la Cueva del Eco?");
+                                        System.out.println("1. Entrar en la cueva");
+                                        System.out.println("2. Continuar hacia Ciudad Brasal");
+                                        System.out.print("Elige una opcion: ");
+
+                                        int opcionCueva = teclado.nextInt();
+
+                                        while (opcionCueva < 1 || opcionCueva > 2) {
+                                            System.out.print("Opcion no valida. Elige 1 o 2: ");
+                                            opcionCueva = teclado.nextInt();
+                                        }
+
+                                        if (opcionCueva == 1) {
+
+                                            int hallazgo = (int) (Math.random() * 8) + 1;
+
+                                            System.out.println();
+                                            System.out.println("Te adentras en la cueva y encuentras algo entre las rocas...");
+
+                                            switch (hallazgo) {
+
+                                                case 1:
+                                                    monedas = monedas + 100;
+                                                    System.out.println("Has encontrado 100 monedas.");
+                                                    break;
+
+                                                case 2:
+                                                    monedas = monedas + 200;
+                                                    System.out.println("¡Un pequeño tesoro! Has encontrado 200 monedas.");
+                                                    break;
+
+                                                case 3:
+                                                    caramelos = caramelos + 3;
+                                                    System.out.println("Has encontrado 3 caramelos.");
+                                                    break;
+
+                                                case 4:
+                                                    monedas = monedas + 50;
+                                                    caramelos = caramelos + 2;
+                                                    System.out.println("Has encontrado 50 monedas y 2 caramelos.");
+                                                    break;
+
+                                                case 5:
+                                                    System.out.println("Un ladron aparece y te exige 50 monedas.");
+
+                                                    if (monedas >= 50) {
+                                                        // OJO: aqui el ladron te DA monedas (+50); deberia ser 'monedas - 50'.
+                                                        monedas = monedas + 50;
+                                                        System.out.println("El ladron huye con tus 50 monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes 50 monedas. El ladron se marcha.");
+                                                    }
+                                                    break;
+
+                                                case 6:
+
+                                                    if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemon;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                    break;
+                                                case 7:
+
+                                                    if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemon;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                break;
+                                                case 8:
+
+                                                    if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemon;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                break;
+                                            }
+
+                                        } else {
+                                            System.out.println("Decides no entrar y sigues tu camino.");
+                                        }
+
+                                        // En el lago el jugador puede conseguir objetos o criaturas.
+                                        // EVENTO 2: LAGO DE LOS REFLEJOS
+                                        System.out.println();
+                                        System.out.println("================================================");
+                                        System.out.println("             EL LAGO DE LOS REFLEJOS");
+                                        System.out.println("================================================");
+                                        System.out.println("Despues de dejar atras la cueva, continuas por un sendero");
+                                        System.out.println("que desciende hasta un enorme lago.");
+                                        System.out.println("El agua esta completamente tranquila y refleja las montañas.");
+                                        System.out.println();
+                                        System.out.println("De repente, algo brillante aparece flotando en medio del lago.");
+                                        System.out.println("Parece una pequeña caja que se mueve lentamente con el agua.");
+                                        System.out.println();
+                                        System.out.println("Hannibal: ¿Que sera eso? Parece que podria contener algo...");
+
+                                        char respuestaLago;
+
+                                        do {
+                                            System.out.println();
+                                            System.out.println("¿Quieres acercarte para intentar coger el objeto?");
+                                            System.out.println("S = Acercarme al objeto");
+                                            System.out.println("N = Continuar mi camino");
+                                            System.out.print("Tu respuesta: ");
+
+                                            respuestaLago = teclado.next().charAt(0);
+
+                                            if (respuestaLago != 'S' && respuestaLago != 's' && respuestaLago != 'N' && respuestaLago != 'n') {
+                                                System.out.println("Respuesta no valida. Escribe S o N.");
+                                            }
+
+                                        } while (respuestaLago != 'S' && respuestaLago != 's' && respuestaLago != 'N' && respuestaLago != 'n');
+
+                                        if (respuestaLago == 'S' || respuestaLago == 's') {
+
+                                            System.out.println();
+                                            System.out.println("Te acercas a la orilla y consigues recuperar la caja.");
+                                            System.out.println("Al abrirla, descubres que contiene algo inesperado...");
+
+                                            int hallazgoLago = (int) (Math.random() * 10) + 1;
+
+                                            switch (hallazgoLago) {
+
+                                                case 1:
+                                                    monedas = monedas + 100;
+                                                    System.out.println("¡Has encontrado 100 monedas dentro de la caja!");
+                                                    break;
+
+                                                case 2:
+                                                    monedas = monedas + 300;
+                                                    System.out.println("¡Increible! Has encontrado 300 monedas.");
+                                                    break;
+
+                                                case 3:
+                                                    caramelos = monedas + 5;
+                                                    System.out.println("Has encontrado 5 caramelos.");
+                                                    break;
+
+                                                case 4:
+                                                    monedas = monedas + 50;
+                                                    caramelos = caramelos + 3;
+                                                    System.out.println("Has encontrado 50 monedas y 3 caramelos.");
+                                                    break;
+
+                                                case 5:
+                                                    System.out.println("¡La caja estaba preparada como una trampa!");
+                                                    System.out.println("Un ladron aparece desde unos arbustos y te exige 100 monedas.");
+
+                                                    if (monedas >= 100) {
+                                                        monedas = monedas - 100;
+                                                        System.out.println("El ladron consigue escapar con tus 100 monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes suficientes monedas y el ladron se marcha.");
+                                                    }
+                                                    break;
+
+                                                case 6:
+                                                    monedas = monedas + 200;
+                                                    System.out.println("¡Has encontrado una bolsa escondida con 200 monedas!");
+                                                    break;
+
+                                                case 7:
+                                                    caramelos = caramelos + 8;
+                                                    System.out.println("¡Que suerte! Has encontrado 8 caramelos.");
+                                                    break;
+
+                                                case 8:
+                                                    int pokemonLago = (int) (Math.random() * nombres.length);
+
+                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago] + "!");
+
+                                                    if (cantidad < equipo.length) {
+                                                        equipo[cantidad] = pokemonLago;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[pokemonLago][0];
+                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago][0];
+                                                        cantidad++;
+
+                                                        System.out.println(nombres[pokemonLago] + " se ha unido a tu equipo.");
+                                                    } else {
+                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
+                                                    }
+                                                    break;
+                                                case 9:
+                                                    int pokemonLago2 = (int) (Math.random() * nombres.length);
+
+                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago2] + "!");
+
+                                                    if (cantidad < equipo.length) {
+                                                        equipo[cantidad] = pokemonLago2;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[pokemonLago2][0];
+                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago2][0];
+                                                        cantidad++;
+
+                                                        System.out.println(nombres[pokemonLago2] + " se ha unido a tu equipo.");
+                                                    } else {
+                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
+                                                    }
+                                                    break;
+                                                case 10:
+
+                                                    int pokemonLago3 = (int) (Math.random() * nombres.length);
+
+                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago3] + "!");
+
+                                                    if (cantidad < equipo.length) {
+                                                        equipo[cantidad] = pokemonLago3;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[pokemonLago3][0];
+                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago3][0];
+                                                        cantidad++;
+
+                                                        System.out.println(nombres[pokemonLago3]
+                                                                + " se ha unido a tu equipo.");
+                                                    } else {
+                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
+                                                    }
+                                                    break;
+                                            }
+
+                                        } else {
+                                            System.out.println();
+                                            System.out.println("Hannibal: No tengo tiempo para detenerme.");
+                                            System.out.println("Decides dejar el objeto flotando y continuar tu camino.");
+                                        }
+
+                                        // Damián aparece para provocar al protagonista.
+                                        // ENCUENTRO CON DAMIAN
+                                        System.out.println();
+                                        System.out.println("Al abandonar el lago, escuchas una voz familiar.");
+                                        System.out.println("Damián: Vaya, Hannibal. Veo que has conseguido una medalla.");
+                                        System.out.println("Hannibal: Damián. ¿Desde cuando te dedicas a seguirme?");
+                                        System.out.println("Damián: No te hagas ilusiones. Solo quiero asegurarme de que");
+                                        System.out.println("no llegues a ser mejor entrenador que yo.");
+                                        System.out.println("Hannibal: Si quieres demostrar algo, gana tus propias medallas.");
+                                        System.out.println("Damián: Disfruta de tu pequeña victoria. En Ciudad Brasal");
+                                        System.out.println("descubriras que todavia estas muy lejos de mi nivel.");
+                                        System.out.println("Damián se marcha por un sendero distinto.");
+                                        System.out.println();
+                                        System.out.println("A lo lejos distingues las chimeneas de Ciudad Brasal.");
+                                        System.out.println("¡Has llegado al pueblo del segundo gimnasio!");
+
+                                        rutaSegundoGimnasioExplorada = true;
+                                    }
+
+                                    // =====================================
+                                    // CIUDAD BRASAL: SERVICIOS
+                                    // =====================================
+
+                                    boolean enCiudadBrasal = true;
+
+                                    // BUCLE WHILE: menu de Ciudad Brasal hasta que se elige continuar.
+                                    while (enCiudadBrasal) {
+
+                                        System.out.println();
+                                        System.out.println("================================");
+                                        System.out.println("          CIUDAD BRASAL");
+                                        System.out.println("================================");
+                                        System.out.println("1. Visitar el Centro Pokemon");
+                                        System.out.println("2. Visitar la tienda");
+                                        System.out.println("3. Ver inventario");
+                                        System.out.println("4. Continuar hacia el segundo gimnasio");
+                                        System.out.print("Elige una opcion: ");
+
+                                        int opcionCiudad = teclado.nextInt();
+
+                                        switch (opcionCiudad) {
+
+                                            case 1:
+                                                System.out.println();
+                                                System.out.println("=== CENTRO POKEMON ===");
+
+                                                for (int i = 0; i < cantidad; i++) {
+                                                    vidaActual[i] = vidaMaxima[i];
+                                                }
+
+                                                System.out.println("¡Todos tus Pokemon han recuperado su vida!");
+                                                break;
+
+                                            case 2:
+                                                System.out.println();
+                                                System.out.println("======= BIENVENIDO A LA TIENDA ========");
+                                                System.out.println("Tienes " + monedas + " monedas.");
+                                                System.out.println();
+                                                System.out.println("1. Un caramelo (" + PRECIO_CARAMELO + " monedas)");
+                                                System.out.println("2. Pack de 10 caramelos (80 monedas)");
+                                                System.out.println("3. Salir de la tienda");
+                                                System.out.print("¿Que quieres comprar?: ");
+
+                                                int opcionTienda = teclado.nextInt();
+
+                                                if (opcionTienda == 1) {
+
+                                                    if (monedas >= PRECIO_CARAMELO) {
+                                                        caramelos = caramelos + 1;
+                                                        monedas = monedas - PRECIO_CARAMELO;
+                                                        System.out.println("Has comprado 1 caramelo.");
+                                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes monedas suficientes.");
+                                                    }
+
+                                                } else if (opcionTienda == 2) {
+
+                                                    if (monedas >= 80) {
+                                                        caramelos = caramelos + 10;
+                                                        monedas = monedas - 80;
+                                                        System.out.println("Has comprado 10 caramelos.");
+                                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                                    } else {
+                                                        System.out.println("No tienes monedas suficientes.");
+                                                    }
+
+                                                } else if (opcionTienda == 3) {
+                                                    System.out.println("Sales de la tienda.");
+                                                } else {
+                                                    System.out.println("Opcion no valida.");
+                                                }
+
+                                                break;
+
+                                            // =========================================
+                                            // Consulta los objetos y monedas disponibles.
+                            // INVENTARIO
+                                            // =========================================
+
+                                            case 3:
+
+                                                System.out.println();
+                                                System.out.println("=== INVENTARIO ===");
+                                                System.out.println("Caramelos: " + caramelos);
+                                                System.out.println("Monedas: " + monedas);
+
+                                                break;
+
+                                            // =========================================
+                                            // PREPARAR EQUIPO DE COMBATE
+                                            // =========================================
+
+                                            case 4:
+
+                                                System.out.println();
+                                                System.out.println("=== EQUIPO DE COMBATE ===");
+
+                                                if (cantidad == 0) {
+                                                    System.out.println("Todavia no tienes ningun Pokemon.");
+                                                    break;
+                                                }
+
+                                                cantidadCombate = 0;
+
+                                                System.out.println("Estos son tus Pokemon:");
+
+                                                for (int i = 0; i < cantidad; i++) {
+                                                    System.out.println((i + 1) + ". " + nombres[equipo[i]]);
+                                                }
+
+                                                System.out.println("Puedes elegir hasta 3 Pokemon para combatir.");
+
+                                                // BUCLE WHILE: se eligen Pokemon hasta llegar a 3 o hasta que no queden mas.
+                                                while (cantidadCombate < 3 && cantidadCombate < cantidad) {
+
+                                                    int numero = 0;
+                                                    boolean repetido;
+
+                                                    do {
+                                                        repetido = false;
+
+                                                        System.out.println("Elige un Pokemon (introduce su numero):");
+                                                        numero = teclado.nextInt();
+
+                                                        if (numero < 1 || numero > cantidad) {
+                                                            System.out.println("Numero no valido, prueba otra vez.");
+                                                        } else {
+
+                                                            // FOR: recorre los ya elegidos para comprobar que el nuevo no esta repetido.
+                                                            for (int j = 0; j < cantidadCombate; j++) {
+                                                                if (numero - 1 == equipoCombate[j]) {
+                                                                    repetido = true;
+                                                                    System.out.println("Ese Pokemon ya ha sido elegido.");
+                                                                }
+                                                            }
+                                                        }
+
+                                                    } while (numero < 1 || numero > cantidad || repetido);
+
+                                                    equipoCombate[cantidadCombate] = numero - 1;
+                                                    cantidadCombate++;
+
+                                                    System.out.println("Pokemon añadido al equipo.");
+
+                                                    if (cantidadCombate < 3 && cantidadCombate < cantidad) {
+
+                                                        System.out.println("¿Quieres añadir otro Pokemon?");
+                                                        System.out.println("1. Si");
+                                                        System.out.println("2. No");
+
+                                                        int opcionEquipo = teclado.nextInt();
+
+                                                        if (opcionEquipo == 2) {
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+
+                                                System.out.println();
+                                                System.out.println("=== TU EQUIPO DE COMBATE ===");
+
+                                                for (int i = 0; i < cantidadCombate; i++) {
+                                                    System.out.println((i + 1) + ". " + nombres[equipo[equipoCombate[i]]]);
+                                                }
+
+                                                 // OJO: el menu muestra la opcion 4 como 'continuar', pero el case 4 prepara el equipo y no tiene break,
+                                                 // asi que cae aqui (case 6) y sale de la ciudad. Habria que poner un break y mover esta salida al case 4.
+                                                 case 6:
+                                                enCiudadBrasal = false;
+                                                break;
+
+                                            default:
+                                                System.out.println("Opcion no valida.");
+                                                break;
+                                        }
+                                    }
+
+                                    // =====================================
+                                    // SEGUNDO GIMNASIO: VOLKAR
+                                    // =====================================
+
+                                    System.out.println();
+                                    System.out.println("================================");
+                                    System.out.println("          SEGUNDO GIMNASIO");
+                                    System.out.println("================================");
+                                    System.out.println("Entras en un gimnasio rodeado de roca volcanica y rios de lava.");
+                                    System.out.println("Volkar: Soy Volkar, lider de tipo Fuego de Ciudad Brasal.");
+                                    System.out.println("Volkar: Nereo me ha hablado de ti, pero no creas que sera facil.");
+                                    System.out.println("Volkar: ¡Mi equipo te hara arder! ¡QUE COMIENCE EL COMBATE!");
+
+                                    equipoRival[0] = 0;
+                                    equipoRival[1] = 3;
+                                    equipoRival[2] = 10;
+
+                                    nivelRival[0] = 3;
+                                    nivelRival[1] = 4;
+                                    nivelRival[2] = 4;
+
+                                    cantidadRival = 3;
+
+                                    for (int i = 0; i < cantidadRival; i++) {
+                                        vidaActualRival[i] = estadisticas[equipoRival[i]][0];
+                                    }
+
+                                    if (cantidadCombate == 0) {
+                                        System.out.println();
+                                        System.out.println("No tienes ningun Pokemon preparado para combatir.");
+                                        System.out.println("Vuelve al menu y prepara tu equipo.");
+                                    } else {
+
+                                        pokemonJugadorActual = 0;
+                                        pokemonRivalActual = 0;
+                                        combateActivo = true;
+
+                                        double[][] efectividad = {
+                                            {1.0, 0.5, 1.5},
+                                            {1.5, 1.0, 0.5},
+                                            {0.5, 1.5, 1.0}
+                                        };
+
+                                        System.out.println();
+                                        System.out.println("=== EQUIPO DE VOLKAR ===");
+
+                                        for (int i = 0; i < cantidadRival; i++) {
+                                            System.out.println((i + 1) + ". " + nombres[equipoRival[i]]);
+                                            System.out.println("Nivel: " + nivelRival[i]);
+                                            System.out.println("Vida: " + vidaActualRival[i]);
+                                        }
+
+                                        System.out.println();
+                                        System.out.println("¡COMIENZA EL COMBATE!");
+
+                                        while (combateActivo) {
+
+                                            if (pokemonJugadorActual >= cantidadCombate || pokemonRivalActual >= cantidadRival) {
                                                 combateActivo = false;
                                                 break;
                                             }
@@ -541,19 +1480,15 @@ public class Juego {
                                             System.out.println();
                                             System.out.println("--------------------------------");
                                             System.out.println("TU TURNO");
-                                            System.out.println(nombres[indicePokemonJugador]
-                                                    + " - Vida: " + vidaActual[posicionJugador]);
-                                            System.out.println(nombres[indicePokemonRival]
-                                                    + " - Vida: " + vidaActualRival[pokemonRivalActual]);
+                                            System.out.println(nombres[indicePokemonJugador] + " - Vida: " + vidaActual[posicionJugador]);
+                                            System.out.println(nombres[indicePokemonRival]  + " - Vida: " + vidaActualRival[pokemonRivalActual]);
 
                                             System.out.println();
                                             System.out.println("Elige un ataque:");
 
                                             for (int i = 0; i < 3; i++) {
                                                 int indiceAtaque = ataquesPokemon[indicePokemonJugador][i];
-                                                System.out.println((i + 1) + ". "
-                                                        + nombresAtaques[indiceAtaque]
-                                                        + " - Potencia: " + potenciaAtaques[indiceAtaque]);
+                                                System.out.println((i + 1) + ". " + nombresAtaques[indiceAtaque] + " - Potencia: " + potenciaAtaques[indiceAtaque]);
                                             }
 
                                             int opcionAtaque;
@@ -596,8 +1531,7 @@ public class Juego {
                                             double multiplicadorJugador = 1.0;
 
                                             if (tipoAtaqueJugador != -1) {
-                                                multiplicadorJugador =
-                                                        efectividad[tipoAtaqueJugador][tipoDefensorRival];
+                                                multiplicadorJugador = efectividad[tipoAtaqueJugador][tipoDefensorRival];
                                             }
 
                                             int danoJugador = (int) (
@@ -637,14 +1571,13 @@ public class Juego {
                                                     break;
                                                 }
 
-                                                System.out.println("Nereo: ¡Adelante, "
-                                                        + nombres[equipoRival[pokemonRivalActual]] + "!");
+                                                System.out.println("Volkar: ¡Adelante, " + nombres[equipoRival[pokemonRivalActual]] + "!");
                                                 continue;
                                             }
 
-                                            // TURNO DE NEREO
+                                            // TURNO DE VOLKAR
                                             System.out.println();
-                                            System.out.println("TURNO DE NEREO");
+                                            System.out.println("TURNO DE VOLKAR");
 
                                             int posicionAtaqueRival = (int) (Math.random() * 3);
                                             int indiceAtaqueRival = ataquesPokemon[indicePokemonRival][posicionAtaqueRival];
@@ -728,681 +1661,6 @@ public class Juego {
                                         if (pokemonRivalActual >= cantidadRival) {
 
                                             System.out.println("¡HAS GANADO EL COMBATE!");
-                                            System.out.println("Nereo: No puede ser... Has ganado.");
-                                            System.out.println("Nereo: Has conseguido la primera medalla. Sigue hacia Ciudad Brasal.");
-
-                                            etapaHistoria = 1;
-
-                                            System.out.println();
-                                            System.out.println("Tus Pokemon reciben 100 puntos de experiencia.");
-
-                                            for (int i = 0; i < cantidadCombate; i++) {
-                                                int posicionEquipo = equipoCombate[i];
-
-                                                if (nivel[posicionEquipo] < 50) {
-                                                    experiencia[posicionEquipo] += 100;
-
-                                                    if (experiencia[posicionEquipo] >= 100) {
-                                                        experiencia[posicionEquipo] -= 100;
-                                                        nivel[posicionEquipo]++;
-
-                                                        System.out.println(nombres[equipo[posicionEquipo]] + " ha subido al nivel " + nivel[posicionEquipo] + "!");
-
-                                                        if (nivel[posicionEquipo] == 5
-                                                                || nivel[posicionEquipo] == 15
-                                                                || nivel[posicionEquipo] == 25
-                                                                || nivel[posicionEquipo] == 35
-                                                                || nivel[posicionEquipo] == 45) {
-
-                                                            vidaMaxima[posicionEquipo] += 2;
-                                                            vidaActual[posicionEquipo] += 2;
-                                                            bonusAtaque[posicionEquipo] += 2;
-                                                            bonusDefensa[posicionEquipo] += 2;
-
-                                                            System.out.println("¡Sus estadisticas han aumentado en 2 puntos!");
-                                                        }
-                                                    }
-                                                } else {
-                                                    System.out.println(nombres[equipo[posicionEquipo]] + " ya ha alcanzado el nivel maximo.");
-                                                }
-
-                                                System.out.println("Experiencia: " + experiencia[posicionEquipo] + "/100");
-                                            }
-
-                                        } else {
-                                            System.out.println("HAS PERDIDO EL COMBATE...");
-                                            System.out.println("Nereo: ¡Te falta mucho entrenamiento!");
-                                            System.out.println("Puedes curarte y volver a intentarlo.");
-                                        }
-                                    }
-                                }
-                                                                // =====================================
-                                // SEGUNDA PARTE: CAMINO A CIUDAD BRASAL
-                                // =====================================
-
-                                if (etapaInicio == 1 && etapaHistoria == 1) {
-
-                                    if (!rutaSegundoGimnasioExplorada) {
-
-                                        System.out.println();
-                                        System.out.println("================================================");
-                                        System.out.println("          EL CAMINO A CIUDAD BRASAL");
-                                        System.out.println("================================================");
-                                        System.out.println("Tras conseguir la primera medalla, abandonas Pueblo de Roca.");
-                                        System.out.println("Tu siguiente destino es Ciudad Brasal, donde se encuentra");
-                                        System.out.println("el segundo gimnasio de la region de Valthera.");
-                                        System.out.println();
-                                        System.out.println("Hannibal: Nereo era fuerte, pero no pienso detenerme aqui.");
-                                        System.out.println("Mientras avanzas, el camino se estrecha entre las montañas.");
-                                        System.out.println("Una cueva oscura aparece junto al sendero.");
-                                        System.out.println("En la entrada hay unas cajas abandonadas y varias huellas.");
-
-                                        // EVENTO 1: CUEVA DEL ECO
-                                        System.out.println();
-                                        System.out.println("================================================");
-                                        System.out.println("                CUEVA DEL ECO");
-                                        System.out.println("================================================");
-                                        System.out.println("¿Quieres explorar la Cueva del Eco?");
-                                        System.out.println("1. Entrar en la cueva");
-                                        System.out.println("2. Continuar hacia Ciudad Brasal");
-                                        System.out.print("Elige una opcion: ");
-
-                                        int opcionCueva = teclado.nextInt();
-
-                                        while (opcionCueva < 1 || opcionCueva > 2) {
-                                            System.out.print("Opcion no valida. Elige 1 o 2: ");
-                                            opcionCueva = teclado.nextInt();
-                                        }
-
-                                        if (opcionCueva == 1) {
-
-                                            int hallazgo = (int) (Math.random() * 6) + 1;
-
-                                            System.out.println();
-                                            System.out.println("Te adentras en la cueva y encuentras algo entre las rocas...");
-
-                                            switch (hallazgo) {
-
-                                                case 1:
-                                                    monedas = monedas + 100;
-                                                    System.out.println("Has encontrado 100 monedas.");
-                                                    break;
-
-                                                case 2:
-                                                    monedas = monedas + 200;
-                                                    System.out.println("¡Un pequeño tesoro! Has encontrado 200 monedas.");
-                                                    break;
-
-                                                case 3:
-                                                    caramelos = caramelos + 3;
-                                                    System.out.println("Has encontrado 3 caramelos.");
-                                                    break;
-
-                                                case 4:
-                                                    monedas = monedas + 50;
-                                                    caramelos = caramelos + 2;
-                                                    System.out.println("Has encontrado 50 monedas y 2 caramelos.");
-                                                    break;
-
-                                                case 5:
-                                                    System.out.println("Un ladron aparece y te exige 50 monedas.");
-
-                                                    if (monedas >= 50) {
-                                                        monedas = monedas - 50;
-                                                        System.out.println("El ladron huye con tus 50 monedas.");
-                                                    } else {
-                                                        System.out.println("No tienes 50 monedas. El ladron se marcha.");
-                                                    }
-                                                    break;
-
-                                                case 6:
-
-                                                    if (cantidad < equipo.length) {
-
-                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
-
-                                                        equipo[cantidad] = nuevoPokemon;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        cantidad++;
-
-                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
-
-                                                    } else {
-                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
-                                                    }
-                                                    break;
-                                                case 7:
-
-                                                    if (cantidad < equipo.length) {
-
-                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
-
-                                                        equipo[cantidad] = nuevoPokemon;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        cantidad++;
-
-                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
-
-                                                    } else {
-                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
-                                                    }
-                                                break;
-                                                case 8:
-
-                                                    if (cantidad < equipo.length) {
-
-                                                        int nuevoPokemon = (int) (Math.random() * nombres.length);
-
-                                                        equipo[cantidad] = nuevoPokemon;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemon][0];
-                                                        cantidad++;
-
-                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemon] + " y se une a tu equipo!");
-
-                                                    } else {
-                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
-                                                    }
-                                                break;
-                                            }
-
-                                        } else {
-                                            System.out.println("Decides no entrar y sigues tu camino.");
-                                        }
-
-                                        // EVENTO 2: LAGO DE LOS REFLEJOS
-                                        System.out.println();
-                                        System.out.println("================================================");
-                                        System.out.println("             EL LAGO DE LOS REFLEJOS");
-                                        System.out.println("================================================");
-                                        System.out.println("Despues de dejar atras la cueva, continuas por un sendero");
-                                        System.out.println("que desciende hasta un enorme lago.");
-                                        System.out.println("El agua esta completamente tranquila y refleja las montañas.");
-                                        System.out.println();
-                                        System.out.println("De repente, algo brillante aparece flotando en medio del lago.");
-                                        System.out.println("Parece una pequeña caja que se mueve lentamente con el agua.");
-                                        System.out.println();
-                                        System.out.println("Hannibal: ¿Que sera eso? Parece que podria contener algo...");
-
-                                        char respuestaLago;
-
-                                        do {
-                                            System.out.println();
-                                            System.out.println("¿Quieres acercarte para intentar coger el objeto?");
-                                            System.out.println("S = Acercarme al objeto");
-                                            System.out.println("N = Continuar mi camino");
-                                            System.out.print("Tu respuesta: ");
-
-                                            respuestaLago = teclado.next().charAt(0);
-
-                                            if (respuestaLago != 'S' && respuestaLago != 's' && respuestaLago != 'N' && respuestaLago != 'n') {
-                                                System.out.println("Respuesta no valida. Escribe S o N.");
-                                            }
-
-                                        } while (respuestaLago != 'S' && respuestaLago != 's' && respuestaLago != 'N' && respuestaLago != 'n');
-
-                                        if (respuestaLago == 'S' || respuestaLago == 's') {
-
-                                            System.out.println();
-                                            System.out.println("Te acercas a la orilla y consigues recuperar la caja.");
-                                            System.out.println("Al abrirla, descubres que contiene algo inesperado...");
-
-                                            int hallazgoLago = (int) (Math.random() * 10) + 1;
-
-                                            switch (hallazgoLago) {
-
-                                                case 1:
-                                                    monedas = monedas + 100;
-                                                    System.out.println("¡Has encontrado 100 monedas dentro de la caja!");
-                                                    break;
-
-                                                case 2:
-                                                    monedas = monedas + 300;
-                                                    System.out.println("¡Increible! Has encontrado 300 monedas.");
-                                                    break;
-
-                                                case 3:
-                                                    caramelos = caramelos + 5;
-                                                    System.out.println("Has encontrado 5 caramelos.");
-                                                    break;
-
-                                                case 4:
-                                                    monedas = monedas + 50;
-                                                    caramelos = caramelos + 3;
-                                                    System.out.println("Has encontrado 50 monedas y 3 caramelos.");
-                                                    break;
-
-                                                case 5:
-                                                    System.out.println("¡La caja estaba preparada como una trampa!");
-                                                    System.out.println("Un ladron aparece desde unos arbustos y te exige 100 monedas.");
-
-                                                    if (monedas >= 100) {
-                                                        monedas = monedas - 100;
-                                                        System.out.println("El ladron consigue escapar con tus 100 monedas.");
-                                                    } else {
-                                                        System.out.println("No tienes suficientes monedas y el ladron se marcha.");
-                                                    }
-                                                    break;
-
-                                                case 6:
-                                                    monedas = monedas + 200;
-                                                    System.out.println("¡Has encontrado una bolsa escondida con 200 monedas!");
-                                                    break;
-
-                                                case 7:
-                                                    caramelos = caramelos + 8;
-                                                    System.out.println("¡Que suerte! Has encontrado 8 caramelos.");
-                                                    break;
-
-                                                case 8:
-                                                    int pokemonLago = (int) (Math.random() * nombres.length);
-
-                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago] + "!");
-
-                                                    if (cantidad < equipo.length) {
-                                                        equipo[cantidad] = pokemonLago;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[pokemonLago][0];
-                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago][0];
-                                                        cantidad++;
-
-                                                        System.out.println(nombres[pokemonLago] + " se ha unido a tu equipo.");
-                                                    } else {
-                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
-                                                    }
-                                                    break;
-                                                case 9:
-                                                    int pokemonLago2 = (int) (Math.random() * nombres.length);
-
-                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago2] + "!");
-
-                                                    if (cantidad < equipo.length) {
-                                                        equipo[cantidad] = pokemonLago2;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[pokemonLago2][0];
-                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago2][0];
-                                                        cantidad++;
-
-                                                        System.out.println(nombres[pokemonLago2] + " se ha unido a tu equipo.");
-                                                    } else {
-                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
-                                                    }
-                                                    break;
-                                                case 10:
-
-                                                    int pokemonLago3 = (int) (Math.random() * nombres.length);
-
-                                                    System.out.println("¡Has encontrado a " + nombres[pokemonLago3] + "!");
-
-                                                    if (cantidad < equipo.length) {
-                                                        equipo[cantidad] = pokemonLago3;
-                                                        nivel[cantidad] = 1;
-                                                        experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] = estadisticas[pokemonLago3][0];
-                                                        vidaMaxima[cantidad] = estadisticas[pokemonLago3][0];
-                                                        cantidad++;
-
-                                                        System.out.println(nombres[pokemonLago3] + " se ha unido a tu equipo.");
-                                                    } else {
-                                                        System.out.println("Tu equipo esta lleno. No puedes añadir mas Pokemon.");
-                                                    }
-                                                    break;
-                                            }
-
-                                        } else {
-                                            System.out.println();
-                                            System.out.println("Hannibal: No tengo tiempo para detenerme.");
-                                            System.out.println("Decides dejar el objeto flotando y continuar tu camino.");
-                                        }
-
-                                        // ENCUENTRO CON DAMIAN
-                                        System.out.println();
-                                        System.out.println("Al abandonar el lago, escuchas una voz familiar.");
-                                        System.out.println("Damián: Vaya, Hannibal. Veo que has conseguido una medalla.");
-                                        System.out.println("Hannibal: Damián. ¿Desde cuando te dedicas a seguirme?");
-                                        System.out.println("Damián: No te hagas ilusiones. Solo quiero asegurarme de que");
-                                        System.out.println("no llegues a ser mejor entrenador que yo.");
-                                        System.out.println("Hannibal: Si quieres demostrar algo, gana tus propias medallas.");
-                                        System.out.println("Damián: Disfruta de tu pequeña victoria. En Ciudad Brasal");
-                                        System.out.println("descubriras que todavia estas muy lejos de mi nivel.");
-                                        System.out.println("Damián se marcha por un sendero distinto.");
-                                        System.out.println();
-                                        System.out.println("A lo lejos distingues las chimeneas de Ciudad Brasal.");
-                                        System.out.println("¡Has llegado al pueblo del segundo gimnasio!");
-
-                                        rutaSegundoGimnasioExplorada = true;
-                                    }
-
-                                    // =====================================
-                                    // CIUDAD BRASAL: SERVICIOS
-                                    // =====================================
-
-                                    boolean enCiudadBrasal = true;
-
-                                    while (enCiudadBrasal) {
-
-                                        System.out.println();
-                                        System.out.println("================================");
-                                        System.out.println("          CIUDAD BRASAL");
-                                        System.out.println("================================");
-                                        System.out.println("1. Visitar el Centro Pokemon");
-                                        System.out.println("2. Visitar la tienda");
-                                        System.out.println("3. Ver inventario");
-                                        System.out.println("4. Continuar hacia el segundo gimnasio");
-                                        System.out.print("Elige una opcion: ");
-
-                                        int opcionCiudad = teclado.nextInt();
-
-                                        switch (opcionCiudad) {
-
-                                            case 1:
-                                                System.out.println();
-                                                System.out.println("=== CENTRO POKEMON ===");
-
-                                                for (int i = 0; i < cantidad; i++) {
-                                                    vidaActual[i] = vidaMaxima[i];
-                                                }
-
-                                                System.out.println("¡Todos tus Pokemon han recuperado su vida!");
-                                                break;
-
-                                            case 2:
-                                                System.out.println();
-                                                System.out.println("La tienda estara disponible proximamente.");
-                                                System.out.println("Tienes " + monedas + " monedas.");
-                                                break;
-
-                                            case 3:
-                                                System.out.println();
-                                                System.out.println("=== INVENTARIO ===");
-                                                System.out.println("Caramelos: " + caramelos);
-                                                System.out.println("Monedas: " + monedas);
-                                                break;
-
-                                            case 4:
-                                                enCiudadBrasal = false;
-                                                break;
-
-                                            default:
-                                                System.out.println("Opcion no valida.");
-                                                break;
-                                        }
-                                    }
-
-                                    // =====================================
-                                    // SEGUNDO GIMNASIO: VOLKAR
-                                    // =====================================
-
-                                    System.out.println();
-                                    System.out.println("================================");
-                                    System.out.println("          SEGUNDO GIMNASIO");
-                                    System.out.println("================================");
-                                    System.out.println("Entras en un gimnasio rodeado de roca volcanica y rios de lava.");
-                                    System.out.println("Volkar: Soy Volkar, lider de tipo Fuego de Ciudad Brasal.");
-                                    System.out.println("Volkar: Nereo me ha hablado de ti, pero no creas que sera facil.");
-                                    System.out.println("Volkar: ¡Mi equipo te hara arder! ¡QUE COMIENCE EL COMBATE!");
-
-                                    equipoRival[0] = 0;
-                                    equipoRival[1] = 3;
-                                    equipoRival[2] = 10;
-
-                                    nivelRival[0] = 3;
-                                    nivelRival[1] = 4;
-                                    nivelRival[2] = 4;
-
-                                    cantidadRival = 3;
-
-                                    for (int i = 0; i < cantidadRival; i++) {
-                                        vidaActualRival[i] = estadisticas[equipoRival[i]][0];
-                                    }
-
-                                    if (cantidadCombate == 0) {
-                                        System.out.println();
-                                        System.out.println("No tienes ningun Pokemon preparado para combatir.");
-                                        System.out.println("Vuelve al menu y prepara tu equipo.");
-                                    } else {
-
-                                        pokemonJugadorActual = 0;
-                                        pokemonRivalActual = 0;
-                                        combateActivo = true;
-
-                                        double[][] efectividad = {
-                                            {1.0, 0.5, 1.5},
-                                            {1.5, 1.0, 0.5},
-                                            {0.5, 1.5, 1.0}
-                                        };
-
-                                        System.out.println();
-                                        System.out.println("=== EQUIPO DE VOLKAR ===");
-
-                                        for (int i = 0; i < cantidadRival; i++) {
-                                            System.out.println((i + 1) + ". " + nombres[equipoRival[i]]);
-                                            System.out.println("Nivel: " + nivelRival[i]);
-                                            System.out.println("Vida: " + vidaActualRival[i]);
-                                        }
-
-                                        System.out.println();
-                                        System.out.println("¡COMIENZA EL COMBATE!");
-
-                                        while (combateActivo) {
-
-                                            if (pokemonJugadorActual >= cantidadCombate
-                                                    || pokemonRivalActual >= cantidadRival) {
-                                                combateActivo = false;
-                                                break;
-                                            }
-
-                                            int posicionJugador = equipoCombate[pokemonJugadorActual];
-                                            int indicePokemonJugador = equipo[posicionJugador];
-                                            int indicePokemonRival = equipoRival[pokemonRivalActual];
-
-                                            System.out.println();
-                                            System.out.println("--------------------------------");
-                                            System.out.println("TU TURNO");
-                                            System.out.println(nombres[indicePokemonJugador]
-                                                    + " - Vida: " + vidaActual[posicionJugador]);
-                                            System.out.println(nombres[indicePokemonRival]
-                                                    + " - Vida: " + vidaActualRival[pokemonRivalActual]);
-
-                                            System.out.println();
-                                            System.out.println("Elige un ataque:");
-
-                                            for (int i = 0; i < 3; i++) {
-                                                int indiceAtaque = ataquesPokemon[indicePokemonJugador][i];
-                                                System.out.println((i + 1) + ". "
-                                                        + nombresAtaques[indiceAtaque]
-                                                        + " - Potencia: " + potenciaAtaques[indiceAtaque]);
-                                            }
-
-                                            int opcionAtaque;
-
-                                            do {
-                                                System.out.print("Introduce el numero del ataque: ");
-                                                opcionAtaque = teclado.nextInt();
-
-                                                if (opcionAtaque < 1 || opcionAtaque > 3) {
-                                                    System.out.println("Ataque no valido.");
-                                                }
-                                            } while (opcionAtaque < 1 || opcionAtaque > 3);
-
-                                            int indiceAtaqueJugador =
-                                                    ataquesPokemon[indicePokemonJugador][opcionAtaque - 1];
-
-                                            int tipoAtaqueJugador = -1;
-
-                                            if (indiceAtaqueJugador <= 2) {
-                                                tipoAtaqueJugador = 0;
-                                            } else if (indiceAtaqueJugador <= 5) {
-                                                tipoAtaqueJugador = 1;
-                                            } else if (indiceAtaqueJugador <= 8) {
-                                                tipoAtaqueJugador = 2;
-                                            }
-
-                                            int tipoDefensorRival = 0;
-
-                                            switch (tipos[indicePokemonRival]) {
-                                                case "Fuego":
-                                                    tipoDefensorRival = 0;
-                                                    break;
-                                                case "Agua":
-                                                    tipoDefensorRival = 1;
-                                                    break;
-                                                case "Planta":
-                                                    tipoDefensorRival = 2;
-                                                    break;
-                                            }
-
-                                            double multiplicadorJugador = 1.0;
-
-                                            if (tipoAtaqueJugador != -1) {
-                                                multiplicadorJugador =
-                                                        efectividad[tipoAtaqueJugador][tipoDefensorRival];
-                                            }
-
-                                            int danoJugador = (int) (
-                                                    (potenciaAtaques[indiceAtaqueJugador]
-                                                    + estadisticas[indicePokemonJugador][1]
-                                                    + bonusAtaque[posicionJugador]
-                                                    - estadisticas[indicePokemonRival][2] / 2.0)
-                                                    * multiplicadorJugador
-                                            );
-
-                                            if (danoJugador < 1) {
-                                                danoJugador = 1;
-                                            }
-
-                                            System.out.println();
-                                            System.out.println(nombres[indicePokemonJugador]
-                                                    + " utiliza " + nombresAtaques[indiceAtaqueJugador] + "!");
-
-                                            if (multiplicadorJugador > 1.0) {
-                                                System.out.println("¡Es muy eficaz!");
-                                            } else if (multiplicadorJugador < 1.0) {
-                                                System.out.println("No es muy eficaz...");
-                                            }
-
-                                            System.out.println("Ha causado " + danoJugador + " puntos de daño.");
-
-                                            vidaActualRival[pokemonRivalActual] -= danoJugador;
-
-                                            if (vidaActualRival[pokemonRivalActual] < 0) {
-                                                vidaActualRival[pokemonRivalActual] = 0;
-                                            }
-
-                                            if (vidaActualRival[pokemonRivalActual] == 0) {
-                                                System.out.println(nombres[indicePokemonRival] + " ha sido debilitado.");
-                                                pokemonRivalActual++;
-
-                                                if (pokemonRivalActual >= cantidadRival) {
-                                                    break;
-                                                }
-
-                                                System.out.println("Volkar: ¡Adelante, "
-                                                        + nombres[equipoRival[pokemonRivalActual]] + "!");
-                                                continue;
-                                            }
-
-                                            // TURNO DE VOLKAR
-                                            System.out.println();
-                                            System.out.println("TURNO DE VOLKAR");
-
-                                            int posicionAtaqueRival = (int) (Math.random() * 3);
-                                            int indiceAtaqueRival =
-                                                    ataquesPokemon[indicePokemonRival][posicionAtaqueRival];
-
-                                            int tipoAtaqueRival = -1;
-
-                                            if (indiceAtaqueRival <= 2) {
-                                                tipoAtaqueRival = 0;
-                                            } else if (indiceAtaqueRival <= 5) {
-                                                tipoAtaqueRival = 1;
-                                            } else if (indiceAtaqueRival <= 8) {
-                                                tipoAtaqueRival = 2;
-                                            }
-
-                                            int tipoDefensorJugador = 0;
-
-                                            switch (tipos[indicePokemonJugador]) {
-                                                case "Fuego":
-                                                    tipoDefensorJugador = 0;
-                                                    break;
-                                                case "Agua":
-                                                    tipoDefensorJugador = 1;
-                                                    break;
-                                                case "Planta":
-                                                    tipoDefensorJugador = 2;
-                                                    break;
-                                            }
-
-                                            double multiplicadorRival = 1.0;
-
-                                            if (tipoAtaqueRival != -1) {
-                                                multiplicadorRival =
-                                                        efectividad[tipoAtaqueRival][tipoDefensorJugador];
-                                            }
-
-                                            int danoRival = (int) (
-                                                    (potenciaAtaques[indiceAtaqueRival]
-                                                    + estadisticas[indicePokemonRival][1]
-                                                    - (estadisticas[indicePokemonJugador][2]
-                                                    + bonusDefensa[posicionJugador]) / 2.0)
-                                                    * multiplicadorRival
-                                            );
-
-                                            if (danoRival < 1) {
-                                                danoRival = 1;
-                                            }
-
-                                            System.out.println(nombres[indicePokemonRival]
-                                                    + " utiliza " + nombresAtaques[indiceAtaqueRival] + "!");
-
-                                            if (multiplicadorRival > 1.0) {
-                                                System.out.println("¡Es muy eficaz!");
-                                            } else if (multiplicadorRival < 1.0) {
-                                                System.out.println("No es muy eficaz...");
-                                            }
-
-                                            System.out.println("Ha causado " + danoRival + " puntos de daño.");
-
-                                            vidaActual[posicionJugador] -= danoRival;
-
-                                            if (vidaActual[posicionJugador] < 0) {
-                                                vidaActual[posicionJugador] = 0;
-                                            }
-
-                                            if (vidaActual[posicionJugador] == 0) {
-                                                System.out.println(nombres[indicePokemonJugador] + " ha sido debilitado.");
-                                                pokemonJugadorActual++;
-
-                                                if (pokemonJugadorActual >= cantidadCombate) {
-                                                    System.out.println("¡Te has quedado sin Pokemon!");
-                                                    break;
-                                                }
-
-                                                int siguientePokemon =
-                                                        equipo[equipoCombate[pokemonJugadorActual]];
-
-                                                System.out.println("¡Adelante, "
-                                                        + nombres[siguientePokemon] + "!");
-                                            }
-                                        }
-
-                                        System.out.println();
-                                        System.out.println("========== FIN DEL COMBATE ==========");
-
-                                        if (pokemonRivalActual >= cantidadRival) {
-
-                                            System.out.println("¡HAS GANADO EL COMBATE!");
                                             System.out.println("Volkar: No puede ser... Has ganado.");
                                             System.out.println("Volkar: Has conseguido la segunda medalla. Ahora te espera Damián.");
 
@@ -1424,27 +1682,20 @@ public class Juego {
                                                         System.out.println(nombres[equipo[posicionEquipo]]
                                                                 + " ha subido al nivel " + nivel[posicionEquipo] + "!");
 
-                                                        if (nivel[posicionEquipo] == 5
-                                                                || nivel[posicionEquipo] == 15
-                                                                || nivel[posicionEquipo] == 25
-                                                                || nivel[posicionEquipo] == 35
-                                                                || nivel[posicionEquipo] == 45) {
-
+                                                            // OJO: aqui se suman 2 puntos, pero el mensaje de abajo dice 3.
                                                             vidaMaxima[posicionEquipo] += 2;
                                                             vidaActual[posicionEquipo] += 2;
                                                             bonusAtaque[posicionEquipo] += 2;
                                                             bonusDefensa[posicionEquipo] += 2;
 
-                                                            System.out.println("¡Sus estadisticas han aumentado en 2 puntos!");
-                                                        }
+                                                            System.out.println("¡Sus estadisticas han aumentado en 3 puntos!");
+                                                        
                                                     }
                                                 } else {
-                                                    System.out.println(nombres[equipo[posicionEquipo]]
-                                                            + " ya ha alcanzado el nivel maximo.");
+                                                    System.out.println(nombres[equipo[posicionEquipo]] + " ya ha alcanzado el nivel maximo.");
                                                 }
 
-                                                System.out.println("Experiencia: "
-                                                        + experiencia[posicionEquipo] + "/100");
+                                                System.out.println("Experiencia: " + experiencia[posicionEquipo] + "/100");
                                             }
 
                                         } else {
@@ -1454,13 +1705,16 @@ public class Juego {
                                         }
                                     }
                                 }
-                                                                // =====================================
+                                // =====================================
                                 // TERCERA PARTE: CAMINO AL SANTUARIO
                                 // =====================================
 
+                                // Tercera parte (cueva final y Damian): solo si la historia esta en la etapa 2.
                                 if (etapaInicio == 2 && etapaHistoria == 2) {
 
+                                    // El ultimo tramo permite prepararse antes del combate final.
                                     // EXPLORACION DE LA CUEVA FINAL
+                                    // La cueva solo se puede explorar una vez (despues cuevaFinalExplorada pasa a true).
                                     if (!cuevaFinalExplorada) {
 
                                         System.out.println();
@@ -1489,23 +1743,23 @@ public class Juego {
 
                                                 case 1:
                                                 case 2:
-                                                    monedas += 100;
+                                                    monedas = monedas + 100;
                                                     System.out.println("Has encontrado 100 monedas.");
                                                     break;
 
                                                 case 3:
-                                                    monedas += 250;
+                                                    monedas = monedas + 250;
                                                     System.out.println("¡Has encontrado 250 monedas!");
                                                     break;
 
                                                 case 4:
-                                                    caramelos += 5;
+                                                    caramelos = caramelos + 5;
                                                     System.out.println("Has encontrado 5 caramelos.");
                                                     break;
 
                                                 case 5:
-                                                    monedas += 100;
-                                                    caramelos += 3;
+                                                    monedas = monedas + 100;
+                                                    caramelos = caramelos + 3;
                                                     System.out.println("Has encontrado 100 monedas y 3 caramelos.");
                                                     break;
 
@@ -1513,7 +1767,7 @@ public class Juego {
                                                     System.out.println("Un ladron intenta robarte 100 monedas.");
 
                                                     if (monedas >= 100) {
-                                                        monedas -= 100;
+                                                        monedas = monedas - 100;
                                                         System.out.println("El ladron consigue escapar con 100 monedas.");
                                                     } else {
                                                         System.out.println("No llevas suficientes monedas y el ladron se marcha.");
@@ -1521,8 +1775,65 @@ public class Juego {
                                                     break;
 
                                                 case 7:
+                                                     if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemonFinal = (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemonFinal;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemonFinal] + "!");
+                                                        System.out.println(nombres[nuevoPokemonFinal] + " se ha unido a tu equipo.");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                    break;
+
                                                 case 8:
+                                                     if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemonFinal =
+                                                                (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemonFinal;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemonFinal] + "!");
+                                                        System.out.println(nombres[nuevoPokemonFinal] + " se ha unido a tu equipo.");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                    break;
                                                 case 9:
+                                                     if (cantidad < equipo.length) {
+
+                                                        int nuevoPokemonFinal =
+                                                                (int) (Math.random() * nombres.length);
+
+                                                        equipo[cantidad] = nuevoPokemonFinal;
+                                                        nivel[cantidad] = 1;
+                                                        experiencia[cantidad] = 0;
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        cantidad++;
+
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemonFinal] + "!");
+                                                        System.out.println(nombres[nuevoPokemonFinal] + " se ha unido a tu equipo.");
+
+                                                    } else {
+                                                        System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
+                                                    }
+                                                    break;
                                                 case 10:
 
                                                     if (cantidad < equipo.length) {
@@ -1533,16 +1844,12 @@ public class Juego {
                                                         equipo[cantidad] = nuevoPokemonFinal;
                                                         nivel[cantidad] = 1;
                                                         experiencia[cantidad] = 0;
-                                                        vidaActual[cantidad] =
-                                                                estadisticas[nuevoPokemonFinal][0];
-                                                        vidaMaxima[cantidad] =
-                                                                estadisticas[nuevoPokemonFinal][0];
+                                                        vidaActual[cantidad] = estadisticas[nuevoPokemonFinal][0];
+                                                        vidaMaxima[cantidad] = estadisticas[nuevoPokemonFinal][0];
                                                         cantidad++;
 
-                                                        System.out.println("¡Has encontrado a "
-                                                                + nombres[nuevoPokemonFinal] + "!");
-                                                        System.out.println(nombres[nuevoPokemonFinal]
-                                                                + " se ha unido a tu equipo.");
+                                                        System.out.println("¡Has encontrado a " + nombres[nuevoPokemonFinal] + "!");
+                                                        System.out.println(nombres[nuevoPokemonFinal] + " se ha unido a tu equipo.");
 
                                                     } else {
                                                         System.out.println("Has encontrado un Pokemon, pero tu equipo esta lleno.");
@@ -1557,6 +1864,7 @@ public class Juego {
                                         cuevaFinalExplorada = true;
                                     }
 
+                                    // Recupera la vida del equipo antes del ultimo combate.
                                     // CURACION ANTES DEL COMBATE FINAL
                                     System.out.println();
                                     System.out.println("Antes de entrar en el santuario, encuentras un pequeño refugio.");
@@ -1585,6 +1893,7 @@ public class Juego {
                                         System.out.println("Decides guardar tus fuerzas y entrar tal como estas.");
                                     }
 
+                                    // El enfrentamiento final decide el desenlace de la aventura.
                                     // ENCUENTRO FINAL CON DAMIAN
                                     System.out.println();
                                     System.out.println("================================================");
@@ -1608,6 +1917,7 @@ public class Juego {
                                     System.out.println("Cruzas las puertas del santuario y comienza el enfrentamiento definitivo.");
                                     System.out.println();
 
+                                    // Se prepara el equipo que utilizara Damián en el combate final.
                                     // EQUIPO DEFINITIVO DE DAMIAN
                                     equipoRival[0] = 3;
                                     equipoRival[1] = 13;
@@ -1656,8 +1966,7 @@ public class Juego {
 
                                         while (combateActivo) {
 
-                                            if (pokemonJugadorActual >= cantidadCombate
-                                                    || pokemonRivalActual >= cantidadRival) {
+                                            if (pokemonJugadorActual >= cantidadCombate || pokemonRivalActual >= cantidadRival) {
                                                 combateActivo = false;
                                                 break;
                                             }
@@ -1669,11 +1978,8 @@ public class Juego {
                                             System.out.println();
                                             System.out.println("----------------------------------------");
                                             System.out.println("TU TURNO");
-                                            System.out.println(nombres[indicePokemonJugador]
-                                                    + " - Vida: " + vidaActual[posicionJugador]);
-                                            System.out.println(nombres[indicePokemonRival]
-                                                    + " de Damián - Vida: "
-                                                    + vidaActualRival[pokemonRivalActual]);
+                                            System.out.println(nombres[indicePokemonJugador] + " - Vida: " + vidaActual[posicionJugador]);
+                                            System.out.println(nombres[indicePokemonRival] + " de Damián - Vida: " + vidaActualRival[pokemonRivalActual]);
 
                                             System.out.println();
                                             System.out.println("Elige un ataque:");
@@ -1681,9 +1987,7 @@ public class Juego {
                                             for (int i = 0; i < 3; i++) {
                                                 int indiceAtaque = ataquesPokemon[indicePokemonJugador][i];
 
-                                                System.out.println((i + 1) + ". "
-                                                        + nombresAtaques[indiceAtaque]
-                                                        + " - Potencia: " + potenciaAtaques[indiceAtaque]);
+                                                System.out.println((i + 1) + ". " + nombresAtaques[indiceAtaque] + " - Potencia: " + potenciaAtaques[indiceAtaque]);
                                             }
 
                                             int opcionAtaqueFinal;
@@ -1728,8 +2032,7 @@ public class Juego {
                                             double multiplicadorJugador = 1.0;
 
                                             if (tipoAtaqueJugador != -1) {
-                                                multiplicadorJugador =
-                                                        efectividadFinal[tipoAtaqueJugador][tipoDefensorRival];
+                                                multiplicadorJugador = efectividadFinal[tipoAtaqueJugador][tipoDefensorRival];
                                             }
 
                                             int danoJugador = (int) (
@@ -1744,8 +2047,7 @@ public class Juego {
                                                 danoJugador = 1;
                                             }
 
-                                            System.out.println(nombres[indicePokemonJugador]
-                                                    + " utiliza " + nombresAtaques[indiceAtaqueJugador] + "!");
+                                            System.out.println(nombres[indicePokemonJugador] + " utiliza " + nombresAtaques[indiceAtaqueJugador] + "!");
 
                                             if (multiplicadorJugador > 1.0) {
                                                 System.out.println("¡Es muy eficaz!");
@@ -1763,8 +2065,7 @@ public class Juego {
 
                                             if (vidaActualRival[pokemonRivalActual] == 0) {
 
-                                                System.out.println(nombres[indicePokemonRival]
-                                                        + " de Damián ha sido debilitado.");
+                                                System.out.println(nombres[indicePokemonRival] + " de Damián ha sido debilitado.");
 
                                                 pokemonRivalActual++;
 
@@ -1772,8 +2073,7 @@ public class Juego {
                                                     break;
                                                 }
 
-                                                System.out.println("Damián: ¡Adelante, "
-                                                        + nombres[equipoRival[pokemonRivalActual]] + "!");
+                                                System.out.println("Damián: ¡Adelante, " + nombres[equipoRival[pokemonRivalActual]] + "!");
                                                 continue;
                                             }
 
@@ -1783,8 +2083,7 @@ public class Juego {
 
                                             int posicionAtaqueRival = (int) (Math.random() * 3);
 
-                                            int indiceAtaqueRival =
-                                                    ataquesPokemon[indicePokemonRival][posicionAtaqueRival];
+                                            int indiceAtaqueRival = ataquesPokemon[indicePokemonRival][posicionAtaqueRival];
 
                                             int tipoAtaqueRival = -1;
 
@@ -1813,8 +2112,7 @@ public class Juego {
                                             double multiplicadorRival = 1.0;
 
                                             if (tipoAtaqueRival != -1) {
-                                                multiplicadorRival =
-                                                        efectividadFinal[tipoAtaqueRival][tipoDefensorJugador];
+                                                multiplicadorRival = efectividadFinal[tipoAtaqueRival][tipoDefensorJugador];
                                             }
 
                                             int danoRival = (int) (
@@ -1829,8 +2127,7 @@ public class Juego {
                                                 danoRival = 1;
                                             }
 
-                                            System.out.println(nombres[indicePokemonRival]
-                                                    + " utiliza " + nombresAtaques[indiceAtaqueRival] + "!");
+                                            System.out.println(nombres[indicePokemonRival] + " utiliza " + nombresAtaques[indiceAtaqueRival] + "!");
 
                                             if (multiplicadorRival > 1.0) {
                                                 System.out.println("¡Es muy eficaz!");
@@ -1848,8 +2145,7 @@ public class Juego {
 
                                             if (vidaActual[posicionJugador] == 0) {
 
-                                                System.out.println(nombres[indicePokemonJugador]
-                                                        + " ha sido debilitado.");
+                                                System.out.println(nombres[indicePokemonJugador] + " ha sido debilitado.");
 
                                                 pokemonJugadorActual++;
 
@@ -1858,11 +2154,9 @@ public class Juego {
                                                     break;
                                                 }
 
-                                                int siguientePokemon =
-                                                        equipo[equipoCombate[pokemonJugadorActual]];
+                                                int siguientePokemon = equipo[equipoCombate[pokemonJugadorActual]];
 
-                                                System.out.println("¡Adelante, "
-                                                        + nombres[siguientePokemon] + "!");
+                                                System.out.println("¡Adelante, " + nombres[siguientePokemon] + "!");
                                             }
                                         }
 
@@ -1881,6 +2175,7 @@ public class Juego {
                                             System.out.println("Has completado tu aventura por Valthera.");
                                             System.out.println("¡ENHORABUENA, HAS TERMINADO ACADEMIA DE CRIATURAS!");
 
+                                            // Al ganar el combate final, termina la aventura.
                                             juegoActivo = false;
 
                                         } else {
@@ -1903,6 +2198,7 @@ public class Juego {
                             }
 
                             // =========================================
+                            // Muestra las criaturas conseguidas y sus datos.
                             // VER MIS CRIATURAS
                             // =========================================
 
@@ -1917,6 +2213,7 @@ public class Juego {
 
                                     for (int i = 0; i < cantidad; i++) {
 
+                                        // FOR de arriba: recorre y muestra los datos de cada Pokemon del jugador.
                                         int indicePokemon = equipo[i];
 
                                         System.out.println();
@@ -1925,18 +2222,14 @@ public class Juego {
                                         System.out.println("Nivel: " + nivel[i]);
                                         System.out.println("Experiencia: " + experiencia[i] + "/100");
                                         System.out.println("Vida: " + vidaActual[i] + "/" + vidaMaxima[i]);
-                                        System.out.println("Ataque: "
-                                                + (estadisticas[indicePokemon][1] + bonusAtaque[i]));
-                                        System.out.println("Defensa: "
-                                                + (estadisticas[indicePokemon][2] + bonusDefensa[i]));
+                                        System.out.println("Ataque: " + (estadisticas[indicePokemon][1] + bonusAtaque[i]));
+                                        System.out.println("Defensa: " + (estadisticas[indicePokemon][2] + bonusDefensa[i]));
                                         System.out.println("Ataques:");
 
                                         for (int j = 0; j < 3; j++) {
                                             int indiceAtaque = ataquesPokemon[indicePokemon][j];
 
-                                            System.out.println((j + 1) + ". "
-                                                    + nombresAtaques[indiceAtaque]
-                                                    + " (Potencia: " + potenciaAtaques[indiceAtaque] + ")");
+                                            System.out.println((j + 1) + ". " + nombresAtaques[indiceAtaque] + " (Potencia: " + potenciaAtaques[indiceAtaque] + ")");
                                         }
                                     }
                                 }
@@ -1944,14 +2237,50 @@ public class Juego {
                                 break;
 
                             // =========================================
+                            // Permite comprar caramelos utilizando monedas.
                             // TIENDA
                             // =========================================
 
                             case 3:
 
                                 System.out.println();
-                                System.out.println("La tienda estara disponible proximamente.");
+                                System.out.println("======= BIENVENIDO A LA TIENDA ========");
                                 System.out.println("Tienes " + monedas + " monedas.");
+                                System.out.println();
+                                System.out.println("1. Un caramelo (" + PRECIO_CARAMELO + " monedas)");
+                                System.out.println("2. Pack de 10 caramelos (80 monedas)");
+                                System.out.println("3. Salir de la tienda");
+                                System.out.print("¿Que quieres comprar?: ");
+
+                                int opcionTienda = teclado.nextInt();
+
+                                if (opcionTienda == 1) {
+
+                                    if (monedas >= PRECIO_CARAMELO) {
+                                        caramelos = caramelos + 1;
+                                        monedas = monedas - PRECIO_CARAMELO;
+                                        System.out.println("Has comprado 1 caramelo.");
+                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                    } else {
+                                        System.out.println("No tienes monedas suficientes.");
+                                    }
+
+                                } else if (opcionTienda == 2) {
+
+                                    if (monedas >= 80) {
+                                        caramelos = caramelos + 10;
+                                        monedas = monedas - 80;
+                                        System.out.println("Has comprado 10 caramelos.");
+                                        System.out.println("Ahora tienes " + caramelos + " caramelos y " + monedas + " monedas.");
+                                    } else {
+                                        System.out.println("No tienes monedas suficientes.");
+                                    }
+
+                                } else if (opcionTienda == 3) {
+                                    System.out.println("Sales de la tienda.");
+                                } else {
+                                    System.out.println("Opcion no valida.");
+                                }
 
                                 break;
 
@@ -2040,17 +2369,54 @@ public class Juego {
                                 System.out.println("=== TU EQUIPO DE COMBATE ===");
 
                                 for (int i = 0; i < cantidadCombate; i++) {
-                                    System.out.println((i + 1) + ". "
-                                            + nombres[equipo[equipoCombate[i]]]);
+                                    System.out.println((i + 1) + ". " + nombres[equipo[equipoCombate[i]]]);
                                 }
 
                                 break;
+
+                            case 6: 
+                                System.out.println();
+                                System.out.println("=== USAR CARAMELO ===");
+
+                                if (caramelos == 0) {
+                                    System.out.println("No tienes caramelos.");
+                                } else {
+                                    for (int i = 0; i < cantidad; i++) {
+                                        System.out.println((i + 1) + ". " + nombres[equipo[i]] + " (Nivel " + nivel[i] + ")");
+                                    }
+                                    System.out.print("¿A cual das el caramelo? (0 para cancelar): ");
+                                    int elegido = teclado.nextInt();
+
+                                    while (elegido < 0 || elegido > cantidad) {
+                                        System.out.print("Opcion no valida. Elige de nuevo: ");
+                                        elegido = teclado.nextInt();
+                                    }
+
+                                    if (elegido != 0) {
+                                        int p = elegido - 1;
+
+                                        // Aumenta el nivel y consume un caramelo.
+                                        // El caramelo sube un nivel y mejora vida, ataque y defensa en 3 puntos.
+                                        nivel[p]++;
+                                        caramelos--;
+
+                                        // Mejora las estadisticas de la criatura.
+                                        vidaMaxima[p] += 3;
+                                        vidaActual[p] += 3;
+                                        bonusAtaque[p] += 3;
+                                        bonusDefensa[p] += 3;
+
+                                        System.out.println(nombres[equipo[p]] + " sube al nivel " + nivel[p] + ": Vida, Ataque y Defensa +3");
+                                    }
+                                }
+
+                            break;
 
                             // =========================================
                             // SALIR DEL JUEGO
                             // =========================================
 
-                            case 6:
+                            case 7:
 
                                 System.out.println();
                                 System.out.println("Saliendo del juego...");
@@ -2080,6 +2446,7 @@ public class Juego {
             }
         }
 
+        // Cierra el Scanner al terminar el programa.
         teclado.close();
     }
 }
