@@ -1,8 +1,0 @@
-{
-    "jdk.jdkhome": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.1.12-hotspot",
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
-}
